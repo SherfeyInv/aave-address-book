@@ -1,4 +1,4 @@
-import {Hex} from 'viem';
+import { Hex } from 'viem';
 
 interface KnownInterfaces<T extends number | Hex = any> {
   value: T;
@@ -62,6 +62,7 @@ export interface PoolConfig {
     LEGACY_STATIC_A_TOKEN_ORACLE?: Hex; // deprecated
     STATA_FACTORY?: Hex;
     RISK_STEWARD?: Hex;
+    RISK_COUNCIL?: Hex;
     EDGE_RISK_ORACLE?: Hex;
     EDGE_RISK_STEWARD_RATES?: Hex;
     EDGE_RISK_STEWARD_CAPS?: Hex;
@@ -76,10 +77,19 @@ export interface PoolConfig {
     PERMISSION_MANAGER?: Hex;
     WALLET_BALANCE_PROVIDER?: Hex;
     GHO_DIRECT_MINTER?: Hex;
+    RWA_A_TOKEN_MANAGER?: Hex;
+    RWA_ORACLE_PARAMS_REGISTRY?: Hex;
+    RWA_A_TOKEN_IMPL?: Hex;
     DUST_BIN?: Hex;
     CLINIC_STEWARD?: Hex;
     SVR_STEWARD?: Hex;
     POOL_EXPOSURE_STEWARD?: Hex;
+    COLLECTOR_SWAP_STEWARD?: Hex;
+    COW_ADAPTER_FACTORY?: Hex;
+    COW_COLLATERAL_SWAP_ADAPTER?: Hex;
+    COW_DEBT_SWAP_ADAPTER?: Hex;
+    COW_REPAY_WITH_COLLATERAL_ADAPTER?: Hex;
+    COW_LEVERAGE_ADAPTER?: Hex;
   };
   // will be used for pending pools where the impls can't be fetched yet
   initial?: {
@@ -132,6 +142,11 @@ export interface NetworkAddresses<T extends Record<string, AddressInfo> = {}> {
     PROTOCOL_GUARDIAN?: Hex;
     AAVE_MERKLE_DISTRIBUTOR?: Hex;
     AAVE_CL_ROBOT_OPERATOR?: Hex;
+    ROBOT_GUARDIAN?: Hex;
+    AFC_SAFE?: Hex;
+    AGENT_HUB?: Hex;
+    AGENT_HUB_AUTOMATION?: Hex;
+    RANGE_VALIDATION_MODULE?: Hex;
     FAUCET?: Hex;
   } & T;
 }
@@ -140,6 +155,24 @@ export interface GhoAddresses<T extends Record<string, AddressInfo> = {}> {
   name: string;
   chainId: number;
   addresses: T;
+}
+
+export interface V4Config {
+  name: string;
+  chainId: number;
+  admin: Record<string, Hex>;
+  hubs: Record<string, Hex>;
+  spokes: Record<string, Hex>;
+  eSpokes?: Record<string, Hex>;
+  positionManagers?: Record<string, Hex>;
+  externalLibraries: Record<string, Hex>;
+  additionalAddresses?: {
+    COW_ADAPTER_FACTORY?: Hex;
+    COW_COLLATERAL_SWAP_ADAPTER?: Hex;
+    COW_DEBT_SWAP_ADAPTER?: Hex;
+    COW_REPAY_WITH_COLLATERAL_ADAPTER?: Hex;
+    COW_LEVERAGE_ADAPTER?: Hex;
+  };
 }
 
 export interface UmbrellaConfig {

@@ -1,8 +1,8 @@
 import util from 'node:util';
 import {exec} from 'node:child_process';
 import {existsSync, mkdirSync, rmSync, writeFileSync} from 'node:fs';
-import {prefixWithGeneratedWarning} from './generator/utils';
-import {ABI_INTERFACES, DOWNLOAD_ABI_INTERFACES} from './configs/abis';
+import {prefixWithGeneratedWarning} from 'scripts/generator/utils';
+import {ABI_INTERFACES, DOWNLOAD_ABI_INTERFACES, resolveAbiInterface} from 'scripts/configs/abis';
 
 const awaitableExec = util.promisify(exec);
 
@@ -15,16 +15,15 @@ export async function generateABIs(removeExisting: boolean) {
   } else {
     mkdirSync('./src/ts/abis');
   }
-  for (const INTERFACE_PATH of ABI_INTERFACES) {
-    const {stdout, stderr} = await awaitableExec(`forge inspect ${INTERFACE_PATH} abi`);
-    const INTERFACE =
-      INTERFACE_PATH.split(':').length > 1 ? INTERFACE_PATH.split(':')[1] : INTERFACE_PATH;
+  for (const ENTRY of ABI_INTERFACES) {
+    const {path, name} = resolveAbiInterface(ENTRY);
+    const {stdout, stderr} = await awaitableExec(`forge inspect --json ${path} abi`);
     if (stderr) {
-      throw new Error(`Failed to generate abi for ${INTERFACE}`);
+      throw new Error(`Failed to generate abi for ${name}`);
     }
-    const varName = `${INTERFACE}_ABI`;
+    const varName = `${name}_ABI`;
     writeFileSync(
-      `./src/ts/abis/${INTERFACE}.ts`,
+      `./src/ts/abis/${name}.ts`,
       prefixWithGeneratedWarning(
         `export const ${varName} = ${JSON.stringify(JSON.parse(stdout.trim()), null, 2)} as const;`,
       ),

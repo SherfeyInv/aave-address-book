@@ -1,5 +1,5 @@
-import {ChainId} from '@bgd-labs/toolbox';
-import {NetworkAddresses} from '../types';
+import {ChainId} from '@aave-dao/toolbox';
+import {NetworkAddresses} from 'scripts/configs/types';
 
 export const mantleAddresses: NetworkAddresses = {
   name: 'Mantle',
@@ -7,5 +7,13 @@ export const mantleAddresses: NetworkAddresses = {
   addresses: {
     TRANSPARENT_PROXY_FACTORY: '0xEB0682d148e874553008730f0686ea89db7DA412',
     PROTOCOL_GUARDIAN: '0x172867391d690Eb53896623DaD22208624230686',
+    AFC_SAFE: '0x22740deBa78d5a0c24C58C740e3715ec29de1bFa',
+    BUDGET_INCENTIVE_SAFE: '0x66Ac7223048037826e12cef9a848199e31AEFabE',
+    MERKL_DISTRIBUTION_SAFE: '0x89587ebe7cFF64c6527fE2Deccc3521D75763E8D',
+    ROBOT_GUARDIAN: '0x441E4053fDDF1e1a77a39d00309Af389096d4124',
+    ALC_SAFE: '0xA1c93D2687f7014Aaf588c764E3Ce80aF016229b',
+    TOKENLOGIC_EXECUTION_SAFE: '0x9DE1d45e2786b03498289959203F25b29B4D1193',
+    AHAB_SAFE: '0xAA2461f0f0A3dE5fEAF3273eAe16DEF861cf594e',
+    AFC_CEX_EARN_SAFE: '0xAA12BAd4a501d45A5b771e49C2Fd415BA8BFc79d',
   },
 };

@@ -1,8 +1,9 @@
 import {Address, Client, getContract} from 'viem';
-import {IPool_ABI} from '../../../src/ts/abis/IPool';
-import {Addresses, EMode, ReserveData} from '../../configs/types';
-import {generateSolidityConstants, wrapIntoSolidityLibrary} from '../utils';
-import {bitmapToIndexes} from '@bgd-labs/toolbox';
+import {IPool_ABI} from 'src/ts/abis/IPool';
+import {Addresses, EMode, ReserveData} from 'scripts/configs/types';
+import {generateSolidityConstants, wrapIntoSolidityLibrary} from 'scripts/generator/utils';
+import {bitmapToIndexes} from '@aave-dao/toolbox';
+import {fixSymbol} from 'scripts/generator/assetsLibraryGenerator';
 
 /**
  * As eModes are stores in a mapping there is no easy way to fetch "all eModes"
@@ -23,24 +24,36 @@ export async function fetchEModes(
   let emptyCount = 0;
   while (true) {
     const eModeData = await poolContract.read.getEModeCategoryCollateralConfig([i]);
-    if (eModeData.liquidationThreshold == 0) {
+    if (eModeData.liquidationThreshold === 0) {
       emptyCount++;
     } else {
-      const [label, collateralBitmap, borrowableBitmap] = await Promise.all([
-        poolContract.read.getEModeCategoryLabel([i]),
+      const [collateralBitmap, borrowableBitmap] = await Promise.all([
         poolContract.read.getEModeCategoryCollateralBitmap([i]),
         poolContract.read.getEModeCategoryBorrowableBitmap([i]),
       ]);
+      let ltvzeroBitmap = 0n;
+      try {
+        ltvzeroBitmap = await poolContract.read.getEModeCategoryLtvzeroBitmap([i]);
+      } catch (e) {
+        console.log(`Error fetching ltvzeroBitmap for eMode ${i}, pool ${poolAddress}`);
+      }
+      const collaterals = bitmapToIndexes(collateralBitmap).map(
+        (id) => reserveData.find((r) => r.id === id)!,
+      );
+      const borrowables = bitmapToIndexes(borrowableBitmap).map(
+        (id) => reserveData.find((r) => r.id === id)!,
+      );
+      const ltvzeros = bitmapToIndexes(ltvzeroBitmap).map(
+        (id) => reserveData.find((r) => r.id === id)!,
+      );
       eModes.set(i, {
-        label,
+        label: `${collaterals.map((a) => fixSymbol(a.symbol, a.UNDERLYING))} / ${borrowables.map((a) => fixSymbol(a.symbol, a.UNDERLYING))}`,
         collateralBitmap,
-        collateralAssets: bitmapToIndexes(collateralBitmap).map(
-          (id) => reserveData.find((r) => r.id === id)!.UNDERLYING,
-        ),
+        collateralAssets: collaterals.map((a) => a.UNDERLYING),
         borrowableBitmap,
-        borrowableAssets: bitmapToIndexes(borrowableBitmap).map(
-          (id) => reserveData.find((r) => r.id === id)!.UNDERLYING,
-        ),
+        borrowableAssets: borrowables.map((a) => a.UNDERLYING),
+        ltvzeroBitmap,
+        ltvzeroAssets: ltvzeros.map((a) => a.UNDERLYING),
         ...eModeData,
       });
     }
@@ -57,7 +70,7 @@ export function generateEmodeLibrary(
 ) {
   const sorted = Array.from(eModes).sort(([keyA], [keyB]) => keyA - keyB);
   const formatted = sorted.reduce((acc, [value, eMode]) => {
-    acc[eMode.label.toUpperCase().replace(/[^A-Z0-9]+/gi, '_')] = {
+    acc[eMode.label] = {
       value,
       type: 'uint8',
     };

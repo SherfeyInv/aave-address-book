@@ -1,5 +1,5 @@
-import {ChainId} from '@bgd-labs/toolbox';
-import {NetworkAddresses} from '../types';
+import {ChainId} from '@aave-dao/toolbox';
+import {NetworkAddresses} from 'scripts/configs/types';
 
 export const lineaAddresses: NetworkAddresses = {
   name: 'Linea',
@@ -10,5 +10,13 @@ export const lineaAddresses: NetworkAddresses = {
     PROTOCOL_GUARDIAN: '0x0BF186764D8333a938f35e5dD124a7b9b9dccDF9',
     AFC_SAFE: '0x22740deBa78d5a0c24C58C740e3715ec29de1bFa',
     MASIV_SAFE: '0xdef1FA4CEfe67365ba046a7C630D6B885298E210',
+    AGENT_HUB: '0xa1e306dfB12270b02960d5a612539fc587108eD7',
+    AGENT_HUB_AUTOMATION: '0xc2eb8C711fFBD2cba570d61C081b0bED2B4054F6',
+    RANGE_VALIDATION_MODULE: '0x9240a6669cc4782fc98620212862df5cb2e0df10',
+    BUDGET_INCENTIVE_SAFE: '0x66Ac7223048037826e12cef9a848199e31AEFabE',
+    MERKL_DISTRIBUTION_SAFE: '0x89587ebe7cFF64c6527fE2Deccc3521D75763E8D',
+    ROBOT_GUARDIAN: '0x441E4053fDDF1e1a77a39d00309Af389096d4124',
+    TOKENLOGIC_EXECUTION_SAFE: '0x9DE1d45e2786b03498289959203F25b29B4D1193',
+    V4_SECURITY_COUNCIL: '0x187AAE17d4931310B3fc75743e7F16Bdc9eD77e9',
   },
 };

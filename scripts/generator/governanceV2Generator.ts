@@ -1,13 +1,13 @@
 import * as fs from 'fs';
-import {Addresses} from '../configs/types';
+import {Addresses} from 'scripts/configs/types';
 import {
   generateJsConstants,
   generateSolidityConstants,
   prefixWithGeneratedWarning,
   prefixWithPragma,
   wrapIntoSolidityLibrary,
-} from './utils';
-import {ChainId} from '@bgd-labs/toolbox';
+} from 'scripts/generator/utils';
+import {ChainId} from '@aave-dao/toolbox';
 
 const govV2Addresses: Addresses = {
   SHORT_EXECUTOR: '0xEE56e2B3D491590B5b31738cC34d5232F378a8D5',

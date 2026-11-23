@@ -1,5 +1,5 @@
-import {ChainId} from '@bgd-labs/toolbox';
-import {NetworkAddresses} from '../types';
+import {ChainId} from '@aave-dao/toolbox';
+import {NetworkAddresses} from 'scripts/configs/types';
 
 export const bnbAddresses: NetworkAddresses = {
   name: 'BNB',
@@ -14,5 +14,13 @@ export const bnbAddresses: NetworkAddresses = {
     MASIV_SAFE: '0xdef1FA4CEfe67365ba046a7C630D6B885298E210',
     APE_SAFE: '0xAA43203167317DeeF8288095C44b84a686918d2E',
     APE_VOTING_SAFE: '0xa9e777D56C0Ad861f6a03967E080e767ad8D39b6',
+    REWARD_STEWARD: '0x6046A62a80a2c19A0De91063602ce90533c62ae1',
+    AGENT_HUB: '0x115E662Fa3f0b83014eB3f6F86F3D94BeC5eB411',
+    AGENT_HUB_AUTOMATION: '0x78C2eCf3Ad48F90350f42EB338675cA1b31a7f11',
+    RANGE_VALIDATION_MODULE: '0x9240a6669cc4782fc98620212862df5cb2e0df10',
+    ROBOT_GUARDIAN: '0x441E4053fDDF1e1a77a39d00309Af389096d4124',
+    TOKENLOGIC_EXECUTION_SAFE: '0x9DE1d45e2786b03498289959203F25b29B4D1193',
+    AFC_CEX_EARN_SAFE: '0xAA12BAd4a501d45A5b771e49C2Fd415BA8BFc79d',
+    V4_SECURITY_COUNCIL: '0x187AAE17d4931310B3fc75743e7F16Bdc9eD77e9',
   },
 };

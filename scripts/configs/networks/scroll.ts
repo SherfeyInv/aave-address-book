@@ -1,12 +1,16 @@
 import {Hex} from 'viem';
-import {ChainId} from '@bgd-labs/toolbox';
-import {NetworkAddresses} from '../types';
+import {ChainId} from '@aave-dao/toolbox';
+import {NetworkAddresses} from 'scripts/configs/types';
 
 export const scrollAddresses: NetworkAddresses<{
   wstETH_stETH_AGGREGATOR: Hex;
   AFC_SAFE: Hex;
   MASIV_SAFE: Hex;
   APE_VOTING_SAFE: Hex;
+  REWARD_STEWARD: Hex;
+  BUDGET_INCENTIVE_SAFE: Hex;
+  MERKL_DISTRIBUTION_SAFE: Hex;
+  TOKENLOGIC_EXECUTION_SAFE: Hex;
 }> = {
   name: 'Scroll',
   chainId: ChainId.scroll,
@@ -19,5 +23,10 @@ export const scrollAddresses: NetworkAddresses<{
     AFC_SAFE: '0x22740deBa78d5a0c24C58C740e3715ec29de1bFa',
     MASIV_SAFE: '0xdef1FA4CEfe67365ba046a7C630D6B885298E210',
     APE_VOTING_SAFE: '0xa9e777D56C0Ad861f6a03967E080e767ad8D39b6',
+    REWARD_STEWARD: '0xc50C0D9C4E5df6f2F244a72FD4DA562877CD16EE',
+    BUDGET_INCENTIVE_SAFE: '0x66Ac7223048037826e12cef9a848199e31AEFabE',
+    MERKL_DISTRIBUTION_SAFE: '0x89587ebe7cFF64c6527fE2Deccc3521D75763E8D',
+    ROBOT_GUARDIAN: '0x441E4053fDDF1e1a77a39d00309Af389096d4124',
+    TOKENLOGIC_EXECUTION_SAFE: '0x9DE1d45e2786b03498289959203F25b29B4D1193',
   },
 };

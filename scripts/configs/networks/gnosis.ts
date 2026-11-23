@@ -1,6 +1,6 @@
 import {Hex} from 'viem';
-import {ChainId} from '@bgd-labs/toolbox';
-import {NetworkAddresses} from '../types';
+import {ChainId} from '@aave-dao/toolbox';
+import {NetworkAddresses} from 'scripts/configs/types';
 
 export const gnosisAddresses: NetworkAddresses<{
   wstETH_stETH_AGGREGATOR: Hex;
@@ -12,6 +12,12 @@ export const gnosisAddresses: NetworkAddresses<{
   ALC_INCENTIVE_SAFE: Hex;
   MERIT_INCENTIVE_SAFE: Hex;
   AHAB_SAFE: Hex;
+  REWARD_STEWARD: Hex;
+  BUDGET_INCENTIVE_SAFE: Hex;
+  MERKL_DISTRIBUTION_SAFE: Hex;
+  ALC_SAFE: Hex;
+  TOKENLOGIC_EXECUTION_SAFE: Hex;
+  V4_SECURITY_COUNCIL: Hex;
 }> = {
   name: 'Gnosis',
   chainId: ChainId.gnosis,
@@ -29,5 +35,15 @@ export const gnosisAddresses: NetworkAddresses<{
     ALC_INCENTIVE_SAFE: '0xAAB6f926DCDaE536F54ce58478Dbc1a0d0f98871',
     MERIT_INCENTIVE_SAFE: '0xAA870e4B82deaDa3727235f34183Ec9B728714C8',
     AHAB_SAFE: '0xAA2461f0f0A3dE5fEAF3273eAe16DEF861cf594e',
+    REWARD_STEWARD: '0xE513b6304712D1055C88f72f1952FAe49c09f4ce',
+    AGENT_HUB: '0x7520bb9c237c864957e9a9881821bF882491bc5C',
+    AGENT_HUB_AUTOMATION: '0x5f65e68ddb5cfdb5b64bd8562dba08af6b26818c',
+    RANGE_VALIDATION_MODULE: '0x9240a6669cc4782fc98620212862df5cb2e0df10',
+    BUDGET_INCENTIVE_SAFE: '0x66Ac7223048037826e12cef9a848199e31AEFabE',
+    MERKL_DISTRIBUTION_SAFE: '0x89587ebe7cFF64c6527fE2Deccc3521D75763E8D',
+    ROBOT_GUARDIAN: '0x441E4053fDDF1e1a77a39d00309Af389096d4124',
+    ALC_SAFE: '0xa1c93d2687f7014aaf588c764e3ce80af016229b',
+    TOKENLOGIC_EXECUTION_SAFE: '0x9DE1d45e2786b03498289959203F25b29B4D1193',
+    V4_SECURITY_COUNCIL: '0x187AAE17d4931310B3fc75743e7F16Bdc9eD77e9',
   },
 };

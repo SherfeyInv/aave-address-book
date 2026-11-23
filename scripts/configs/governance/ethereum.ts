@@ -1,5 +1,5 @@
-import {ChainId} from '@bgd-labs/toolbox';
-import {GovernanceConfig} from '../types';
+import {ChainId} from '@aave-dao/toolbox';
+import {GovernanceConfig} from 'scripts/configs/types';
 
 // OUTDATED ABI
 export const governanceConfigSepolia: GovernanceConfig = {

@@ -1,6 +1,6 @@
 import {Hex} from 'viem';
-import {ChainId} from '@bgd-labs/toolbox';
-import {NetworkAddresses} from '../types';
+import {ChainId} from '@aave-dao/toolbox';
+import {NetworkAddresses} from 'scripts/configs/types';
 
 export const arbitrumAddresses: NetworkAddresses<{
   wstETH_stETH_AGGREGATOR: Hex;
@@ -16,6 +16,12 @@ export const arbitrumAddresses: NetworkAddresses<{
   ALC_INCENTIVE_SAFE: Hex;
   MERIT_INCENTIVE_SAFE: Hex;
   AHAB_SAFE: Hex;
+  REWARD_STEWARD: Hex;
+  BUDGET_INCENTIVE_SAFE: Hex;
+  MERKL_DISTRIBUTION_SAFE: Hex;
+  TOKENLOGIC_EXECUTION_SAFE: Hex;
+  STABLE_VAULT_DAO_WALLET_INCENTIVES: Hex;
+  V4_SECURITY_COUNCIL: Hex;
 }> = {
   name: 'Arbitrum',
   chainId: ChainId.arbitrum,
@@ -38,8 +44,18 @@ export const arbitrumAddresses: NetworkAddresses<{
     ALC_INCENTIVE_SAFE: '0xAAB6f926DCDaE536F54ce58478Dbc1a0d0f98871',
     MERIT_INCENTIVE_SAFE: '0xAA870e4B82deaDa3727235f34183Ec9B728714C8',
     AHAB_SAFE: '0xAA2461f0f0A3dE5fEAF3273eAe16DEF861cf594e',
+    REWARD_STEWARD: '0x659966aCE41944f6E321cA7FE76de4775779d11C',
+    AGENT_HUB: '0xf4F2bc657abe96863dC1Ae17C9e9fFfc2B420e7B',
+    AGENT_HUB_AUTOMATION: '0xff822f7e2178176bb650df82427a42ca0c04ccab',
+    RANGE_VALIDATION_MODULE: '0x9240a6669cc4782fc98620212862df5cb2e0df10',
+    BUDGET_INCENTIVE_SAFE: '0x66Ac7223048037826e12cef9a848199e31AEFabE',
+    MERKL_DISTRIBUTION_SAFE: '0x89587ebe7cFF64c6527fE2Deccc3521D75763E8D',
+    ROBOT_GUARDIAN: '0x441E4053fDDF1e1a77a39d00309Af389096d4124',
+    TOKENLOGIC_EXECUTION_SAFE: '0x9DE1d45e2786b03498289959203F25b29B4D1193',
+    STABLE_VAULT_DAO_WALLET_INCENTIVES: '0x4cc755fBFAE135933b64865E7D7Ea6ae778A4D43',
+    V4_SECURITY_COUNCIL: '0x187AAE17d4931310B3fc75743e7F16Bdc9eD77e9',
   },
-};  
+};
 
 export const arbitrumSepoliaAddresses: NetworkAddresses = {
   name: 'ArbitrumSepolia',

@@ -1,5 +1,5 @@
-import {ChainId} from '@bgd-labs/toolbox';
-import {PoolConfig} from '../types';
+import {ChainId} from '@aave-dao/toolbox';
+import {PoolConfig} from 'scripts/configs/types';
 
 export const harmonyProtoV3: PoolConfig = {
   name: 'Harmony',

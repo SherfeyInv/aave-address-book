@@ -1,0 +1,129 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  id-token: write # Required for OIDC trusted publishing
+  contents: write # Needed to create releases
+  pull-requests: write # Needed to create PRs
+
+name: release-please
+jobs:
+  test-solidity:
+    uses: aave-dao/github-workflows/.github/workflows/foundry-test.yml@main
+    secrets:
+      ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
+    with:
+      compareLcov: false
+      compareGas: false
+
+  test-node:
+    uses: aave-dao/github-workflows/.github/workflows/test-node.yml@main
+    secrets:
+      ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
+      EXPLORER_PROXY: ${{ secrets.EXPLORER_PROXY }}
+
+  release-please:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    needs:
+      - test-solidity
+      - test-node
+    outputs:
+      releaseCreated: ${{ steps.release.outputs.release_created }}
+    steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ secrets.UPDATE_BOT_APP_ID }}
+          private-key: ${{ secrets.UPDATE_BOT_TOKEN }}
+
+      - uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # pin@v4.4.0
+        id: release
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          release-type: node
+
+      - uses: actions/checkout@v6
+        if: ${{ !steps.release.outputs.release_created}}
+
+      - name: Approve pr
+        if: ${{ !steps.release.outputs.release_created }}
+        run: |
+          PR_NUMBER=$(echo '${{ steps.release.outputs.pr }}' | jq -r '.number')
+          gh pr review --approve "$PR_NUMBER"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+
+      - name: Enable Pull Request Automerge
+        if: ${{ !steps.release.outputs.release_created }}
+        run: |
+          PR_NUMBER=$(echo '${{ steps.release.outputs.pr }}' | jq -r '.number')
+          gh pr merge --squash --auto "$PR_NUMBER"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_REPO: ${{ github.repository }}
+
+  release-node:
+    if: ${{ needs.release-please.outputs.releaseCreated }}
+    uses: aave-dao/github-workflows/.github/workflows/release-node.yml@main
+    needs: release-please
+
+  release-address-book-api:
+    if: ${{ needs.release-please.outputs.releaseCreated == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      STATICS_BUCKET: ${{ secrets.STATICS_BUCKET }}
+    needs:
+      - release-please
+      - release-node
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: aave-dao/github-workflows/.github/actions/setup-node@main
+
+      - name: Generate address book API
+        run: npm --workspace ui run generate:api
+
+      - name: Read release version
+        id: version
+        run: node -e "console.log('value=' + require('./package.json').version)" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # pin@v5.1.1
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Publish versioned address book API
+        run: |
+          : "${STATICS_BUCKET:?STATICS_BUCKET must be configured}"
+          aws s3 sync ui/out/api/v1/ \
+            "s3://${STATICS_BUCKET}/address-book/releases/v${{ steps.version.outputs.value }}/" \
+            --delete \
+            --content-type "application/json" \
+            --cache-control "public,max-age=31536000,immutable" \
+            --only-show-errors
+
+      - name: Publish latest address book API
+        run: |
+          : "${STATICS_BUCKET:?STATICS_BUCKET must be configured}"
+          aws s3 sync ui/out/api/v1/ \
+            "s3://${STATICS_BUCKET}/address-book/releases/latest/" \
+            --delete \
+            --content-type "application/json" \
+            --cache-control "public,max-age=60,must-revalidate" \
+            --only-show-errors
+
+  release-node-alpha:
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
+    needs:
+      - test-solidity
+      - test-node
+    uses: aave-dao/github-workflows/.github/workflows/release-node-alpha.yml@main

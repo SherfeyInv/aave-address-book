@@ -5,8 +5,8 @@ import {
   prefixWithGeneratedWarning,
   prefixWithPragma,
   wrapIntoSolidityLibrary,
-} from './utils';
-import {ChainId} from '@bgd-labs/toolbox';
+} from 'scripts/generator/utils';
+import {ChainId} from '@aave-dao/toolbox';
 
 export const SAFETY_MODULE = {
   STK_AAVE: '0x4da27a545c0c5B758a6BA100e3a049001de870f5',

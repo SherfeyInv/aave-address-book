@@ -6,14 +6,14 @@ import {
   prefixWithGeneratedWarning,
   prefixWithPragma,
   wrapIntoSolidityLibrary,
-} from './utils';
-import {generateUmbrellaStakeAssetsLibrary} from './assetsLibraryGenerator';
-import {bytes32toAddress, getImplementationStorageSlot} from './utils';
-import {AddressInfo, Addresses, UmbrellaConfig, UmbrellaStakeData} from '../configs/types';
-import {getClient} from '../clients';
-import {IUmbrella_ABI} from '../../src/ts/abis/IUmbrella';
-import {IUmbrellaStakeToken_ABI} from '../../src/ts/abis/IUmbrellaStakeToken';
-import {fetchV3ExecutorAddresses} from '../generator/governanceV3Generator';
+} from 'scripts/generator/utils';
+import {generateUmbrellaStakeAssetsLibrary} from 'scripts/generator/assetsLibraryGenerator';
+import {bytes32toAddress, getImplementationStorageSlot} from 'scripts/generator/utils';
+import {AddressInfo, Addresses, UmbrellaConfig, UmbrellaStakeData} from 'scripts/configs/types';
+import {getClient} from 'scripts/clients';
+import {IUmbrella_ABI} from 'src/ts/abis/IUmbrella';
+import {IUmbrellaStakeToken_ABI} from 'src/ts/abis/IUmbrellaStakeToken';
+import {fetchV3ExecutorAddresses} from 'scripts/generator/governanceV3Generator';
 
 export interface UmbrellaAddresses {
   UMBRELLA: AddressInfo;
@@ -120,7 +120,8 @@ export async function generateUmbrellaLibrary(umbrellaConfig: UmbrellaConfig) {
     `./src/${name}.sol`,
     prefixWithGeneratedWarning(
       prefixWithPragma(
-        `import {IUmbrella} from './common/IUmbrella.sol';\n\n` +
+        `import {IUmbrella} from './common/IUmbrella.sol';\n` +
+          `import {IUmbrellaStakeToken} from './common/IUmbrellaStakeToken.sol';\n\n` +
           wrapIntoSolidityLibrary(
             generateSolidityConstants({
               chainId: umbrellaConfig.chainId,

@@ -1,5 +1,5 @@
-import {ChainId} from '@bgd-labs/toolbox';
-import {NetworkAddresses} from '../types';
+import {ChainId} from '@aave-dao/toolbox';
+import {NetworkAddresses} from 'scripts/configs/types';
 
 export const fantomAddresses: NetworkAddresses = {
   name: 'Fantom',

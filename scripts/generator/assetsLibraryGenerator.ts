@@ -1,6 +1,6 @@
 import {Hex, zeroAddress} from 'viem';
-import {ReserveData, UmbrellaStakeData} from '../configs/types';
-import {generateSolidityConstants, wrapIntoSolidityLibrary, removeNetworkAbbreviation} from './utils';
+import {ReserveData, UmbrellaStakeData} from 'scripts/configs/types';
+import {generateSolidityConstants, wrapIntoSolidityLibrary, removeNetworkAbbreviation} from 'scripts/generator/utils';
 
 /**
  * As symbols are used as variable name in Solidity and Javascript there are certain characters that are not allowed and should be replaced.
@@ -49,9 +49,13 @@ export function fixSymbol(symbol: string, _underlying: string) {
       return 'BPT_WBTC_WETH';
     case '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4':
       return 'BPT_BAL_WETH';
-    case '0xaf88d065e77c8cc2239327c5edb3a432268e5831':
-    case '0x0b2c639c533813f4aa9d7837caf62653d097ff85':
-    case '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359': // polygon
+    case '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8': // arbitrum bridged
+    case '0x7f5c764cbc14f9669b88837ca1490cca17c31607': // optimism bridged
+    case '0x2791bca1f2de4661ed88a30c99a7a9449aa84174': // polygon bridged
+      return 'USDCe';
+    case '0xaf88d065e77c8cc2239327c5edb3a432268e5831': // arbitrum native
+    case '0x0b2c639c533813f4aa9d7837caf62653d097ff85': // optimism native
+    case '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359': // polygon native
       return 'USDCn';
   }
   if (symbol === 'USD₮0' || symbol === 'fUSDT') return 'USDT';
@@ -132,7 +136,7 @@ export function generateUmbrellaStakeAssetsLibrary(
   const formattedStakeData = umbrellaStakeData.map(({symbol: _symbol, ...rest}) => {
     const symbol = fixUmbrellaStakeSymbol(_symbol, rest.UNDERLYING);
     const addresses = {
-      [`${symbol}`]: rest.STAKE_TOKEN,
+      [`${symbol}`]: {value: rest.STAKE_TOKEN, type: 'IUmbrellaStakeToken'},
       [`${symbol}_DECIMALS`]: {value: rest.decimals, type: 'uint8'},
     };
     return addresses;
